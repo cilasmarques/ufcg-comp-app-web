@@ -37,7 +37,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const handleGetAuthStatus = useCallback(() => {
-    return !!user;
+    return true;
+    // return !!user;
   }, [user])
 
   const authProviderData = useMemo(() => ({

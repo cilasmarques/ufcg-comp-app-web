@@ -1,17 +1,22 @@
-import { GoogleLogin } from "@react-oauth/google"
+import { GoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../../context/authContext";
-import './login.css'
+
+import {
+  LoginContainer,
+  LoginTitle,
+} from './styles.component.js';
 
 export const LoginPage = () => {
   const { handleAuthSuccess, handleAuthFailure } = useAuth();
-  
+
   return (
-    <div className="container">
-      <h1>COMPUTAÇÃO@UFCG</h1>
+    <LoginContainer>
+      <LoginTitle>COMPUTAÇÃO@UFCG</LoginTitle>
       <GoogleLogin
+        theme="filled_blue"        
         onSuccess={handleAuthSuccess}
         onFailure={handleAuthFailure}
       />
-    </div>
+    </LoginContainer>
   )
 }
