@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode";
-import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 export const useAuth = () => {
   const authContext = useContext(AuthContext);
@@ -15,30 +15,39 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('@user')));
 
   const handleAuthSuccess = useCallback((googleData) => {
-    let user_credentials = jwtDecode(googleData.credential);
-    setUser(user_credentials);
+    const reviewersEmailRegex = new RegExp(`[a-z0-9.]+${process.env.REACT_APP_REVIEWERS_EMAIL_DOMAIN}`);
+    const user_credentials = jwtDecode(googleData.credential);    
 
-    console.log(user_credentials);
-    console.log("sucesso");
+    let cUser = null;
+    if (process.env.REACT_APP_ADMIN_EMAIL === user_credentials.email) {
+      cUser = {...user_credentials, 'role': 'admin'};
+    } else if (reviewersEmailRegex.test(user_credentials.email)) {
+      cUser = {...user_credentials, 'role': 'reviewer'};
+    }
+
+    localStorage.setItem('@user', JSON.stringify(cUser));
+    setUser(cUser);
   }, []);
 
   const handleAuthFailure = (result) => {
     setUser(null);
+    localStorage.removeItem('@user');
     console.log(result);
     console.log("falha");
   };
 
   const handleSignOut = useCallback(() => {
     setUser(null);
+    localStorage.removeItem('@user');
     console.log("logout");
   }, []);
 
   const handleGetAuthStatus = useCallback(() => {
-    return true;
-    // return !!user;
+    // return true;
+    return !!user;
   }, [user])
 
   const authProviderData = useMemo(() => ({
