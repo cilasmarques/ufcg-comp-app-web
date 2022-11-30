@@ -2,6 +2,7 @@
 import Sidebar from "../../components/Sidebar/Sidebar";
 import GeneralTable from "../../components/GeneralTable/GeneralTable";
 import { Grid, GridContent, GridSidebar } from "../../styles/global/Grid";
+import { Title } from "./style.component";
 
 export const Dashboard = () => {
   return (
@@ -11,9 +12,10 @@ export const Dashboard = () => {
       </GridSidebar>
 
       <GridContent>
-        <h1>Horas complementares</h1>
-        <GeneralTable variant="signed" />
-        <GeneralTable variant="unsigned" />
+        <Title>Horas complementares</Title>
+
+        <GeneralTable variant="closed" />
+        <GeneralTable variant="opened" />
       </GridContent>
     </Grid>
   )
