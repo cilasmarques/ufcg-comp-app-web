@@ -16,12 +16,11 @@ export const GridSidebar = styled.div`
   height: 100%;
   position: relative;
   box-sizing: border-box;
-  box-shadow: 0rem 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
 `;
 
 export const GridContent = styled.div`
   grid-area: CT;
-  padding: 0.75rem 0.87rem 0.25rem 0.62rem;
+  padding: 0.75rem 2rem 0.25rem 2rem;
   align-items: "center";
   overflow-y: auto;
   ::-webkit-scrollbar {
