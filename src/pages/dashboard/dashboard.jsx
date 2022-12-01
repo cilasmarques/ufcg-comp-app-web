@@ -1,6 +1,6 @@
 // Components
 import Sidebar from "../../components/Sidebar/Sidebar";
-import GeneralTable from "../../components/GeneralTable/GeneralTable";
+import GeneralTable from "../../components/Table/GeneralTable";
 import { Grid, GridContent, GridSidebar } from "../../styles/global/Grid";
 import { Title } from "./style.component";
 
