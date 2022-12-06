@@ -23,9 +23,9 @@ export const AuthProvider = ({ children }) => {
 
     let cUser = null;
     if (process.env.REACT_APP_ADMIN_EMAIL === user_credentials.email) {
-      cUser = {...user_credentials, 'role': 'admin'};
+      cUser = {...user_credentials, isAdmin: true};
     } else if (reviewersEmailRegex.test(user_credentials.email)) {
-      cUser = {...user_credentials, 'role': 'reviewer'};
+      cUser = {...user_credentials, isAdmin: false};
     }
 
     localStorage.setItem('@user', JSON.stringify(cUser));

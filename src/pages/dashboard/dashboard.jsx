@@ -1,6 +1,6 @@
 // Components
 import Sidebar from "../../components/Sidebar/Sidebar";
-import GeneralTable from "../../components/Table/GeneralTable";
+import Table from "../../components/Table/Table";
 import { Grid, GridContent, GridSidebar } from "../../styles/global/Grid";
 import { Title } from "./style.component";
 
@@ -14,8 +14,8 @@ export const Dashboard = () => {
       <GridContent>
         <Title>Horas complementares</Title>
 
-        <GeneralTable variant="closed" />
-        <GeneralTable variant="opened" />
+        <Table variant="closed" />
+        <Table variant="opened" />
       </GridContent>
     </Grid>
   )

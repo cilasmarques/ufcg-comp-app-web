@@ -16,9 +16,9 @@ const boxStyle = {
   p: 4,
 };
 
-const AssignmentOptions = ({ activityId }) => {
+const AssignmentOptions = ({ activityId }, props) => {
   const [reviewer, setReviewer] = useState(REVIEWERS_OPTIONS[0]);
-  const [openModal, setOpenModal] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleAssignReviewer = () => {
     updateActivity(activityId, { 'reviewer': reviewer, 'status': 'ASSIGNED' })
@@ -47,7 +47,7 @@ const AssignmentOptions = ({ activityId }) => {
   return (
     <div>
       <select onChange={handleSetReviewer}>
-        {REVIEWERS_OPTIONS.map(reviewer => <option> {reviewer} </option>)}
+        {REVIEWERS_OPTIONS.map(reviewer => <option key={reviewer}> {reviewer} </option>)}
       </select>
       <button onClick={handleOpenModal}> ATRIBUIR </button>
 

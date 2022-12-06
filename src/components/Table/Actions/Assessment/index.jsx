@@ -14,9 +14,9 @@ const boxStyle = {
   p: 4,
 };
 
-const AssessmentOptions = ({ activityId }) => {
+const AssessmentOptions = ({ activityId }, props) => {
   const [evaluation, setEvaluation] = useState("");
-  const [openModal, setOpenModal] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
   const [additionalField, setAdditionalField] = useState(null);
 
   const handleEvaluate = () => {
