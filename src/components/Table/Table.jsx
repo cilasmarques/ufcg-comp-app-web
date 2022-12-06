@@ -27,7 +27,6 @@ export const TableVariants = {
 
 const Table = ({ variant }) => {
   const { user } = useAuth();
-  const { isAdmin } = { ...user };
 
   const [sort, setSort] = useState("status");
   const [page, setPage] = useState(0);
@@ -41,14 +40,15 @@ const Table = ({ variant }) => {
       let activitiesStatus = null;
       switch (variant) {
         case TableVariants.closed:
-          activitiesStatus = isAdmin ? ["VALIDATED", "REJECTED", "ASSIGNED"] : ["VALIDATED", "REJECTED"];
+          activitiesStatus = user.isAdmin ? ["VALIDATED", "REJECTED", "ASSIGNED"] : ["VALIDATED", "REJECTED"];
           break;
         default:
-          activitiesStatus = isAdmin ? ['CREATED'] : ['ASSIGNED'];
+          activitiesStatus = user.isAdmin ? ['CREATED'] : ['ASSIGNED'];
           break;
       }
 
-      getActivities({ "status": activitiesStatus }, page, rowsPerPage, sort, 'asc')
+      const query = user.isAdmin ? { "status": activitiesStatus } : { "status": activitiesStatus, "reviewer": user.email };
+      getActivities(query, page, rowsPerPage, sort, 'asc')
         .then(res => {
           setActivities(res.data.activities)
         });
@@ -60,7 +60,7 @@ const Table = ({ variant }) => {
     }
     loadTableContent();
     return;
-  }, [sort, page, rowsPerPage, isAdmin, variant]);
+  }, [sort, page, rowsPerPage, user.email, user.isAdmin, variant]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -101,9 +101,9 @@ const Table = ({ variant }) => {
         <MUITable stickyHeader>
           <TableHead>
             <HeadContent
-              isAdmin={isAdmin}
+              isAdmin={user.isAdmin}
               enableActionsField={variant === TableVariants.opened}
-              enableReviewerField={isAdmin && variant === TableVariants.closed}
+              enableReviewerField={user.isAdmin && variant === TableVariants.closed}
             />
           </TableHead>
 
@@ -118,9 +118,9 @@ const Table = ({ variant }) => {
                 <BodyContent
                   key={index}
                   data={data}
-                  isAdmin={isAdmin}
+                  isAdmin={user.isAdmin}
                   enableActionsField={variant === TableVariants.opened}
-                  enableReviewerField={isAdmin && variant === TableVariants.closed}
+                  enableReviewerField={user.isAdmin && variant === TableVariants.closed}
                 />
               )}
           </TableBody>
