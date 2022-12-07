@@ -1,9 +1,11 @@
 import { TableCell, TableRow } from "@mui/material";
+import { saveAs } from 'file-saver';
 
 import AssignmentOptions from '../Actions/Assignment/index';
 import AssessmentOptions from '../Actions/Assessment';
+import { downloadActivity } from "../../../services/activityService";
 
-const BodyContent = ({ data, isAdmin, enableActionsField,enableReviewerField }, props) => {
+const BodyContent = ({ data, isAdmin, enableActionsField, enableReviewerField }, props) => {
 
   function handlePrettyDate(date) {
     const cDate = new Date(date)
@@ -29,6 +31,18 @@ const BodyContent = ({ data, isAdmin, enableActionsField,enableReviewerField }, 
     }
   };
 
+  function handleDownloadDoc(path) {
+    downloadActivity(path)
+      .then((res) => {
+        if (res.status === 200) {
+          const filename = path.split("/")[1];
+          saveAs(res.data, filename);
+        } else {
+          alert('Erro ao baixar o documento');
+        }
+      });
+  };
+
   return (
     <TableRow key={data._id}>
       <TableCell align="center">
@@ -52,15 +66,18 @@ const BodyContent = ({ data, isAdmin, enableActionsField,enableReviewerField }, 
       <TableCell align="center">
         <p>{data.description}</p>
       </TableCell>
+
       <TableCell align="center">
-        <p>#TODO</p>
+        <button onClick={() => handleDownloadDoc(data.proof_doc)}>
+          Baixar documento
+        </button>
       </TableCell>
       {enableReviewerField &&
         <TableCell align="center">
           <p>{data.reviewer}</p>
         </TableCell>
       }
-      {enableActionsField && 
+      {enableActionsField &&
         <TableCell align="center">
           {isAdmin ?
             <AssignmentOptions activityId={data._id} /> :

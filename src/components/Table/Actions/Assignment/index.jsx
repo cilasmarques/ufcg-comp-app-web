@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Modal } from "@mui/material";
-import { updateActivity } from "../../../../services/activityService";
+import { assignActivity } from "../../../../services/activityService";
 
 const REVIEWERS_OPTIONS = ["fubica@computacao.ufcg.edu.br", "klebia@computcao.ufcg.edu.br", "cilas.marques@ccc.ufcg.edu.br"]
 
@@ -21,7 +21,7 @@ const AssignmentOptions = ({ activityId }, props) => {
   const [openModal, setOpenModal] = useState(false);
 
   const handleAssignReviewer = () => {
-    updateActivity(activityId, { 'reviewer': reviewer, 'status': 'ASSIGNED' })
+    assignActivity({ 'activity_id': activityId, 'reviewer': reviewer })
       .then((res) => {
         handleCloseModal();
         if (res.status === 200) {

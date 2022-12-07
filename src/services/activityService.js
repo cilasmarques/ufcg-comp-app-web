@@ -20,13 +20,13 @@ export async function getActivitiesCount() {
   }
 }
 
-// export async function assignActivity(data) {
-//   try {
-//     return await axios.post(`${URL}/activities/assign`, data);
-//   } catch (error) {
-//     handleError(error);
-//   }
-// }
+export async function assignActivity(data) {
+  try {
+    return await axios.put(`${URL}/activity/assign`, data);
+  } catch (error) {
+    handleError(error);
+  }
+}
 
 export async function updateActivity(activityId, data) {
   try {
@@ -35,4 +35,14 @@ export async function updateActivity(activityId, data) {
     handleError(error);
   }
 }
+
+export async function downloadActivity(path) {
+  try {
+    return await axios.get(`${URL}/activity/doc/download?path=${path}`, { responseType: 'blob' });
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+
 
