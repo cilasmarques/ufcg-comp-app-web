@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Box, Modal } from "@mui/material";
 import { updateActivity } from "../../../../services/activityService";
+import { useActivities } from "../../../../context/activitiesContext";
 
 const boxStyle = {
   position: 'absolute',
@@ -15,6 +16,7 @@ const boxStyle = {
 };
 
 const AssessmentOptions = ({ activityId }, props) => {
+  const { handleCloseActivity } = useActivities();
   const [evaluation, setEvaluation] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [additionalField, setAdditionalField] = useState(null);
@@ -27,6 +29,7 @@ const AssessmentOptions = ({ activityId }, props) => {
         handleCloseModal();
         if (res.status === 200) {
           alert('Atividade avaliada com sucesso.');
+          handleCloseActivity(activityId, { 'status': value })
         } else {
           alert('Erro ao avaliada a atividade');
         }
@@ -44,13 +47,13 @@ const AssessmentOptions = ({ activityId }, props) => {
 
   const handleAddCredits = (event) => {
     console.log(event.target.value)
-    setAdditionalField({'credits': event.target.value})
-  }
+    setAdditionalField({ 'credits': event.target.value })
+  };
 
   const handleAddJustify = (event) => {
     console.log(event.target.value)
-    setAdditionalField({'justify': event.target.value})
-  }
+    setAdditionalField({ 'justify': event.target.value })
+  };
 
   return (
     <div>
@@ -72,7 +75,7 @@ const AssessmentOptions = ({ activityId }, props) => {
                 placeholder="Insira a quantidade de créditos"
                 style={{ width: '300px' }}
                 type="number"
-                min="0" 
+                min="0"
               /> :
               <input
                 onChange={handleAddJustify}
@@ -87,7 +90,7 @@ const AssessmentOptions = ({ activityId }, props) => {
         </Box>
       </Modal>
     </div >
-  )
+  );
 }
 
 export default AssessmentOptions;

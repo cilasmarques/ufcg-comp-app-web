@@ -1,22 +1,22 @@
+
 import PropTypes from 'prop-types';
-import { useEffect, useState } from "react";
 import { Table as MUITable, TableBody, TableCell, TableHead, TablePagination, TableRow } from "@mui/material";
 
-import { getActivities, getActivitiesCount } from "../../services/activityService";
-import { useAuth } from "../../context/authContext";
+// COMPONENTS
 import BodyContent from './Body';
 import HeadContent from './Head';
+
+// CONTEXT
+import { useAuth } from "../../context/authContext";
+import { useActivities } from '../../context/activitiesContext';
 
 const SORT_OPTIONS = [
   'owner_email',
   'owner_enroll',
-  // 'credits',
   'period',
   'type',
-  // 'description',
   'status',
-  // 'reviewer',
-  // 'createdTime',
+  'reviewer',
   'updatedTime'
 ]
 
@@ -25,54 +25,34 @@ export const TableVariants = {
   opened: 'opened'
 };
 
-const Table = ({ variant }) => {
+const Table = ({ variant, activities }) => {
   const { user } = useAuth();
-
-  const [sort, setSort] = useState("status");
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
-  const [activities, setActivities] = useState([]);
-  const [activitiesCount, setActivitiesCount] = useState(0);
-
-  useEffect(() => {
-    //FIXME resolve multiple requests
-    const loadTableContent = () => {
-      let activitiesStatus = null;
-      switch (variant) {
-        case TableVariants.closed:
-          activitiesStatus = user.isAdmin ? ["VALIDATED", "REJECTED", "ASSIGNED"] : ["VALIDATED", "REJECTED"];
-          break;
-        default:
-          activitiesStatus = user.isAdmin ? ['CREATED'] : ['ASSIGNED'];
-          break;
-      }
-
-      const query = user.isAdmin ? { "status": activitiesStatus } : { "status": activitiesStatus, "reviewer": user.email };
-      getActivities(query, page, rowsPerPage, sort, 'asc')
-        .then(res => {
-          setActivities(res.data.activities)
-        });
-
-      getActivitiesCount()
-        .then(res => {
-          setActivitiesCount(res.data.activities_count)
-        });
-    }
-    loadTableContent();
-    return;
-  }, [sort, page, rowsPerPage, user.email, user.isAdmin, variant]);
+  const { openedActivitiesPagination, closedActivitiesPagination, setClosedActivitiesPagination, setOpenedActivitiesPagination } = useActivities();
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    if (variant === TableVariants.closed) {
+      setClosedActivitiesPagination(previousState => ({ ...previousState, page: newPage }));
+    } else {
+      setOpenedActivitiesPagination(previousState => ({ ...previousState, page: newPage }));
+    }
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+    const rows = +event.target.value;
+    if (variant === TableVariants.closed) {
+      setClosedActivitiesPagination(previousState => ({ ...previousState, page: 0, size: rows }));
+    } else {
+      setOpenedActivitiesPagination(previousState => ({ ...previousState, page: 0, size: rows }));
+    }
   };
 
   const handleChangeSort = (event) => {
-    setSort(event.target.value);
+    const sort = event.target.value;
+    if (variant === TableVariants.closed) {
+      setClosedActivitiesPagination(previousState => ({ ...previousState, sort: sort }));
+    } else {
+      setOpenedActivitiesPagination(previousState => ({ ...previousState, sort: sort }));
+    }
   };
 
   const handlePrettySort = (status) => {
@@ -133,13 +113,13 @@ const Table = ({ variant }) => {
         </select>
 
         <TablePagination
-          rowsPerPageOptions={[3, 5]}
           component="div"
-          count={activitiesCount}
-          rowsPerPage={rowsPerPage}
-          page={page}
+          count={3}
+          rowsPerPageOptions={[3, 5]}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          page={variant === TableVariants.closed ? openedActivitiesPagination.page : closedActivitiesPagination.page}
+          rowsPerPage={variant === TableVariants.closed ? openedActivitiesPagination.size : closedActivitiesPagination.size}
         />
       </section>
     </main>
@@ -156,6 +136,6 @@ Table.propTypes = {
   type: PropTypes.string,
   children: PropTypes.node,
   variant: PropTypes.oneOf(Object.values(TableVariants))
-}
+};
 
 export default Table;

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Box, Modal } from "@mui/material";
 import { assignActivity } from "../../../../services/activityService";
+import { useActivities } from "../../../../context/activitiesContext";
 
-const REVIEWERS_OPTIONS = ["fubica@computacao.ufcg.edu.br", "klebia@computcao.ufcg.edu.br", "cilas.marques@ccc.ufcg.edu.br"]
+const REVIEWERS_OPTIONS = ["cilas.marques@ccc.ufcg.edu.br"]
 
 const boxStyle = {
   position: 'absolute',
@@ -17,8 +18,9 @@ const boxStyle = {
 };
 
 const AssignmentOptions = ({ activityId }, props) => {
-  const [reviewer, setReviewer] = useState(REVIEWERS_OPTIONS[0]);
+  const { handleCloseActivity } = useActivities();
   const [openModal, setOpenModal] = useState(false);
+  const [reviewer, setReviewer] = useState(REVIEWERS_OPTIONS[0]);
 
   const handleAssignReviewer = () => {
     assignActivity({ 'activity_id': activityId, 'reviewer': reviewer })
@@ -26,6 +28,7 @@ const AssignmentOptions = ({ activityId }, props) => {
         handleCloseModal();
         if (res.status === 200) {
           alert('Atividade atribuida com sucesso.');
+          handleCloseActivity(activityId, { 'reviewer': reviewer, 'status': 'ASSIGNED' });
         } else {
           alert('Erro ao atribuir atividade');
         }
