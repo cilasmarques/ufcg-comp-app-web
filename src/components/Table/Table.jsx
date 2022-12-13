@@ -25,7 +25,7 @@ export const TableVariants = {
   opened: 'opened'
 };
 
-const Table = ({ variant, activities }) => {
+const Table = ({ variant, activities, activitiesCount }) => {
   const { user } = useAuth();
   const { openedActivitiesPagination, closedActivitiesPagination, setClosedActivitiesPagination, setOpenedActivitiesPagination } = useActivities();
 
@@ -114,12 +114,12 @@ const Table = ({ variant, activities }) => {
 
         <TablePagination
           component="div"
-          count={3}
+          count={activitiesCount}
           rowsPerPageOptions={[3, 5]}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          page={variant === TableVariants.closed ? openedActivitiesPagination.page : closedActivitiesPagination.page}
-          rowsPerPage={variant === TableVariants.closed ? openedActivitiesPagination.size : closedActivitiesPagination.size}
+          page={variant === TableVariants.closed ? closedActivitiesPagination.page : openedActivitiesPagination.page }
+          rowsPerPage={variant === TableVariants.closed ? closedActivitiesPagination.size : openedActivitiesPagination.size}
         />
       </section>
     </main>
