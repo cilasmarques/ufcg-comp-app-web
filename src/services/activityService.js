@@ -3,18 +3,17 @@ import { handleError } from "../utils/handleErrors";
 
 const URL = process.env.REACT_APP_API_URI;
 
-// FIXME This query is made more than once
-export async function getActivities(data, page, rowsPerPage, sort, order) {
+export async function fetchActivities(query, page, rowsPerPage, sort, order) {
   try {
-    return await axios.post(`${URL}/activities?page=${page}&size=${rowsPerPage}&sort=${sort}&order=${order}`, data);
+    return await axios.post(`${URL}/activities?page=${page}&size=${rowsPerPage}&sort=${sort}&order=${order}`, query);
   } catch (error) {
     handleError(error);
   }
 }
 
-export async function getActivitiesCount() {
+export async function fetchActivitiesCount(query) {
   try {
-    return await axios.get(`${URL}/activities/count`);
+    return await axios.post(`${URL}/activities/count`, query);
   } catch (error) {
     handleError(error);
   }
