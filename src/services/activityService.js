@@ -21,7 +21,7 @@ export async function fetchActivitiesCount(query) {
 
 export async function assignActivity(data) {
   try {
-    return await axios.put(`${URL}/activity/assign`, data);
+    return await axios.put(`${URL}/activity/assign/${data.activity_id}`, data);
   } catch (error) {
     handleError(error);
   }
@@ -42,6 +42,3 @@ export async function downloadActivity(path) {
     handleError(error);
   }
 }
-
-
-
