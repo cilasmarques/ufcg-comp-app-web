@@ -22,7 +22,7 @@ export const ActivitiesContext = createContext({
 });
 
 export const ActivitiesProvider = ({ children }) => {
-  const initialPageConfiguration = { page: 0, size: 3, sortField: 'status', sortOrder: 'asc' };
+  const initialPageConfiguration = { page: 0, size: 10, sortField: 'status', sortOrder: 'asc' };
   const [openedActivities, setOpenedActivities] = useState([]);
   const [closedActivities, setClosedActivities] = useState([]);
   const [openedActivitiesCount, setOpenedActivitiesCount] = useState(0);

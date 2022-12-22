@@ -8,24 +8,27 @@ import Table from "../../components/Table/Table";
 import { useActivities } from "../../context/activitiesContext";
 
 // STYLE
-import { Title } from "./style.component";
+import { Title, Head } from "./style.component";
 import { Grid, GridContent, GridSidebar } from "../../styles/global/Grid";
 import { fetchActivities, fetchActivitiesCount } from "../../services/activityService";
 import { useAuth } from "../../context/authContext";
+import { MenuItem, Select } from "@mui/material";
+import { useState } from "react";
 
 export const Dashboard = () => {
   const { user } = useAuth();
   const { closedActivities, openedActivities, closedActivitiesPagination,
     openedActivitiesPagination, openedActivitiesCount, closedActivitiesCount,
-    setOpenedActivitiesCount, setClosedActivitiesCount, setOpenedActivities, setClosedActivities 
+    setOpenedActivitiesCount, setClosedActivitiesCount, setOpenedActivities, setClosedActivities
   } = useActivities();
+
+  const [variant, setVariant] = useState('opened');
 
   useEffect(() => {
     const loadActivitiesData = async () => {
       const queryOpened = user.isAdmin ? { 'status': ["CREATED"] } : { 'status': ["ASSIGNED"] };
-      const queryClosed = user.isAdmin ? { 'status': ["VALIDATED", "REJECTED", "ASSIGNED"] } : { 'status': ["VALIDATED", "REJECTED"] };
 
-      if (queryOpened && queryClosed) {
+      if (queryOpened) {
         const openedActivities = await fetchActivities(
           queryOpened,
           openedActivitiesPagination.page,
@@ -33,6 +36,19 @@ export const Dashboard = () => {
           openedActivitiesPagination.sortField,
           openedActivitiesPagination.sortOrder);
 
+        const openedActivitiesCount = await fetchActivitiesCount(queryOpened);
+        setOpenedActivities(openedActivities.data.activities);
+        setOpenedActivitiesCount(openedActivitiesCount.data.activities_count);
+      }
+    }
+    loadActivitiesData();
+  }, [user, openedActivitiesPagination, setOpenedActivities, setOpenedActivitiesCount]);
+
+  useEffect(() => {
+    const loadActivitiesData = async () => {
+      const queryClosed = user.isAdmin ? { 'status': ["VALIDATED", "REJECTED", "ASSIGNED"] } : { 'status': ["VALIDATED", "REJECTED"] };
+
+      if (queryClosed) {
         const closedActivities = await fetchActivities(
           queryClosed,
           closedActivitiesPagination.page,
@@ -40,21 +56,18 @@ export const Dashboard = () => {
           closedActivitiesPagination.sortField,
           closedActivitiesPagination.sortOrder);
 
-        const openedActivitiesCount = await fetchActivitiesCount(queryOpened);
         const closedActivitiesCount = await fetchActivitiesCount(queryClosed);
-
-        setOpenedActivities(openedActivities.data.activities);
         setClosedActivities(closedActivities.data.activities);
-        setOpenedActivitiesCount(openedActivitiesCount.data.activities_count);
         setClosedActivitiesCount(closedActivitiesCount.data.activities_count);
       }
     }
     loadActivitiesData();
-  }, [
-    user, openedActivitiesPagination, closedActivitiesPagination,
-    setOpenedActivities, setClosedActivities,
-    setClosedActivitiesCount, setOpenedActivitiesCount
-  ]);
+  }, [user, closedActivitiesPagination, setClosedActivities, setClosedActivitiesCount]);
+
+
+  const handleChangeVariant = (e) => {
+    setVariant(e.target.value);
+  };
 
   return (
     <Grid>
@@ -63,10 +76,18 @@ export const Dashboard = () => {
       </GridSidebar>
 
       <GridContent>
-        <Title>Horas complementares</Title>
+        <Head>
+          <Title>Horas complementares</Title>
+          <Select value={variant} onChange={handleChangeVariant}>
+            <MenuItem value={'closed'}>Validado</MenuItem>
+            <MenuItem value={'opened'}>Em aberto</MenuItem>
+          </Select>
+        </Head>
 
-        <Table variant="closed" activities={closedActivities} activitiesCount={closedActivitiesCount} />
-        <Table variant="opened" activities={openedActivities} activitiesCount={openedActivitiesCount} />
+        {(variant === "closed") ?
+          <Table variant="closed" activities={closedActivities} activitiesCount={closedActivitiesCount} /> :
+          <Table variant="opened" activities={openedActivities} activitiesCount={openedActivitiesCount} />
+        }
       </GridContent>
     </Grid>
   )

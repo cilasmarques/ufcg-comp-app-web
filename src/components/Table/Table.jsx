@@ -77,7 +77,7 @@ const Table = ({ variant, activities, activitiesCount }) => {
 
   return (
     <main style={{ marginBottom: 3 }}>
-      <section style={{ width: '100%', height: 344, border: 'solid 3px #004A8F', overflow: 'auto' }}>
+      <section style={{ width: '100%', height: 800, border: 'solid 3px #004A8F', overflow: 'auto' }}>
         <MUITable stickyHeader>
           <TableHead>
             <HeadContent
@@ -115,7 +115,7 @@ const Table = ({ variant, activities, activitiesCount }) => {
         <TablePagination
           component="div"
           count={activitiesCount}
-          rowsPerPageOptions={[3, 5]}
+          rowsPerPageOptions={[10, 15, 20]}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           page={variant === TableVariants.closed ? closedActivitiesPagination.page : openedActivitiesPagination.page }
