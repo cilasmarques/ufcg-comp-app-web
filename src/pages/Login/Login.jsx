@@ -1,5 +1,5 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { useAuth } from "../../context/authContext";
+import { useAuth } from "../../context/AuthContext";
 
 import {
   LoginContainer,

@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
 // PAGES
-import { LoginPage } from "../pages/login/login";
+import { LoginPage } from "../pages/Login/Login";
 
 export const PublicRoutes = () => {
   return (

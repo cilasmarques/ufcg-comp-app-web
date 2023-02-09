@@ -32,21 +32,18 @@ export const AuthProvider = ({ children }) => {
     setUser(cUser);
   }, []);
 
-  const handleAuthFailure = (result) => {
+  const handleAuthFailure = () => {
     setUser(null);
     localStorage.removeItem('@user');
-    console.log(result);
-    console.log("falha");
   };
 
   const handleSignOut = useCallback(() => {
     setUser(null);
     localStorage.removeItem('@user');
-    console.log("logout");
+    console.info("logout");
   }, []);
 
   const handleGetAuthStatus = useCallback(() => {
-    // return true;
     return !!user;
   }, [user])
 

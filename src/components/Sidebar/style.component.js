@@ -28,13 +28,15 @@ export const MenuContainer = styled.div`
 `;
 
 export const MenuItemLink = styled(Link)`
+  display: block;
+  color: black;
+  text-decoration: none;
   padding: 20px 24px;
+  word-wrap: break-word;
   font-family: "Mulish", sans-serif;
   text-decoration: none !important;
   transition: all 0.25s ease-in-out;
   letter-spacing: 0.4px;
-  line-height: 1.3px;
-  margin-top: 2px;
   color: #004A8F;
   &:hover {
     background: #004A8F;

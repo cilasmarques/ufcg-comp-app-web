@@ -1,4 +1,4 @@
-import { useAuth } from "../../context/authContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 import {
   Title,
@@ -8,14 +8,17 @@ import {
 } from "./style.component.js";
 
 const Sidebar = () => {
-  const { handleSignOut } = useAuth();
+  const { user, handleSignOut } = useAuth();
 
   return (
     <Container>
       <Title>Computação UFCG</Title>
 
       <MenuContainer>
-        <MenuItemLink to={"/"}> Horas complementares </MenuItemLink>
+        <MenuItemLink to={"/"}> Atividades complementares </MenuItemLink>
+        {user?.isAdmin &&
+          <MenuItemLink to={"/verificarDocumentos"}> Verificação de documentos </MenuItemLink>
+        }
         <MenuItemLink onClick={handleSignOut}> Sair </MenuItemLink>
       </MenuContainer>
     </Container>

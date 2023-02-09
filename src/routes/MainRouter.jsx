@@ -1,11 +1,11 @@
 import { BrowserRouter } from "react-router-dom";
 
 // CONTEXT
-import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/AuthContext";
 
 // ROUTES
-import { PublicRoutes } from "./publicRoutes";
-import { PrivateRoutes } from "./privateRoutes";
+import { PublicRoutes } from "./PublicRoutes";
+import { PrivateRoutes } from "./PrivateRoutes";
 
 export const MainRouter = () => {
   const { handleGetAuthStatus } = useAuth();

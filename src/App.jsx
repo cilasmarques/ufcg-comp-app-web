@@ -1,7 +1,11 @@
-import { MainRouter } from "./routes/mainRouter";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { AuthProvider } from "./context/authContext";
-import { ActivitiesProvider } from "./context/activitiesContext";
+
+// ROUTES
+import { MainRouter } from "./routes/MainRouter";
+
+// CONTEXT
+import { AuthProvider } from "./context/AuthContext";
+import { ActivitiesProvider } from "./context/ActivitiesContext";
 
 function App() {
   return (

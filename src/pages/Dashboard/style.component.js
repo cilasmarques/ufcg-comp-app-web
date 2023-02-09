@@ -10,5 +10,6 @@ export const Head = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  height: 70px
 `;
