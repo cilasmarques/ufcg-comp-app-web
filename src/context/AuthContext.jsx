@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     const user_credentials = jwtDecode(googleData.credential);    
 
     let cUser = null;
-    if (process.env.REACT_APP_ADMIN_EMAIL === user_credentials.email) {
+    if (process.env.REACT_APP_COORDINATION_EMAIL === user_credentials.email) {
       cUser = {...user_credentials, isAdmin: true};
     } else if (reviewersEmailRegex.test(user_credentials.email)) {
       cUser = {...user_credentials, isAdmin: false};
