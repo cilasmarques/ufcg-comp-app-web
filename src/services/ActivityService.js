@@ -1,44 +1,49 @@
-import axios from "axios";
-import { handleError } from "../utils/handleErrors";
+import API, { handleErrors } from ".";
 
-const URL = process.env.REACT_APP_API_URI;
+import {
+  API_ENDPOINT_ACTIVITY_FIND_BY_STATE,
+  API_ENDPOINT_ACTIVITY_COUNT_BY_STATE,
+  API_ENDPOINT_ACTIVITY_ASSIGN,
+  API_ENDPOINT_ACTIVITY_VALIDATE,
+  API_ENDPOINT_ACTIVITY_VOUCHER_DOWNLOAD
+} from "../utils/constants";
 
 export async function fetchActivities(query, page, rowsPerPage, sort, order) {
   try {
-    return await axios.post(`${URL}/activities/find_by_state?page=${page}&size=${rowsPerPage}&sort=${sort}&order=${order}`, query);
+    return await API.post(`${API_ENDPOINT_ACTIVITY_FIND_BY_STATE}?page=${page}&size=${rowsPerPage}&sort=${sort}&order=${order}`, query);
   } catch (error) {
-    handleError(error);
+    handleErrors(error);
   }
-}
+};
 
 export async function fetchActivitiesCount(query) {
   try {
-    return await axios.post(`${URL}/activities/count_by_state`, query);
+    return await API.post(API_ENDPOINT_ACTIVITY_COUNT_BY_STATE, query);
   } catch (error) {
-    handleError(error);
+    handleErrors(error);
   }
-}
+};
 
 export async function assignActivity(activityId, data) {
   try {
-    return await axios.put(`${URL}/activity/assign/${activityId}`, data);
+    return await API.put(`${API_ENDPOINT_ACTIVITY_ASSIGN}/${activityId}`, data);
   } catch (error) {
-    handleError(error);
+    handleErrors(error);
   }
-}
+};
 
 export async function validateActivity(activityId, data) {
   try {
-    return await axios.put(`${URL}/activity/validate/${activityId}`, data);
+    return await API.put(`${API_ENDPOINT_ACTIVITY_VALIDATE}/${activityId}`, data);
   } catch (error) {
-    handleError(error);
+    handleErrors(error);
   }
-}
+};
 
 export async function downloadActivityVoucher(path) {
   try {
-    return await axios.get(`${URL}/activity/voucher/download?path=${path}`, { responseType: 'blob' });
+    return await API.get(`${API_ENDPOINT_ACTIVITY_VOUCHER_DOWNLOAD}?path=${path}`, { responseType: 'blob' });
   } catch (error) {
-    handleError(error);
+    handleErrors(error);
   }
-}
+};

@@ -34,11 +34,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     const loadActivitiesData = async () => {
-      let query = null;
+      let query = new FormData();
       if (variant === "closed") {
-        query = user.isAdmin ? { 'states': ["APPROVED", "REJECTED", "ASSIGNED"] } : { 'states': ["APPROVED", "REJECTED"] };
+        const states = user.isAdmin ? ["APPROVED", "REJECTED", "ASSIGNED"] : ["APPROVED", "REJECTED"];
+        query.append('states', states);
       } else {
-        query = user.isAdmin ? { 'states': ["CREATED"] } : { 'states': ["ASSIGNED"] };
+        const states = user.isAdmin ? ["CREATED"] : ["ASSIGNED"];
+        query.append('states', states);
       }
 
       if (query) {

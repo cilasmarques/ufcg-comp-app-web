@@ -1,16 +1,13 @@
-import axios from "axios";
-import { handleError } from "../utils/handleErrors";
+import API, { handleErrors } from ".";
 
-const URL = process.env.REACT_APP_API_URI;
+import {
+  API_ENDPOINT_PROCESS_VERIFY
+} from "../utils/constants";
 
 export async function verifyProcess(formData) {
   try {
-    return await axios.post(`${URL}/process/check`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    return await API.post(API_ENDPOINT_PROCESS_VERIFY, formData);
   } catch (error) {
-    handleError(error);
+    handleErrors(error);
   }
-}
+};

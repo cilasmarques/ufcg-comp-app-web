@@ -39,8 +39,8 @@ export const AuthProvider = ({ children }) => {
 
   const handleSignOut = useCallback(() => {
     setUser(null);
+    window.location.href = "/";
     localStorage.removeItem('@user');
-    console.info("logout");
   }, []);
 
   const handleGetAuthStatus = useCallback(() => {
