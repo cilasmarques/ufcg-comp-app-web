@@ -3,18 +3,15 @@ import { API_BASE_URL } from "../utils/constants";
 
 const API = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "multipart/form-data"
-  }
-});
-
-export const setAuthToken = token => {
-  if (token) {
-    API.defaults.headers.common["Authorization"] = 'Bearer ' + token;
-  } else {
-    delete API.defaults.headers.common["Authorization"];
-  }
-};
+  headers: localStorage.getItem("@token") ?
+    {
+      "Content-Type": "multipart/form-data",
+      "Authorization": "Bearer " + localStorage.getItem("@token")
+    } :
+    {
+      "Content-Type": "multipart/form-data",
+    }
+})
 
 export const handleErrors = error => {
   if (error.response) {

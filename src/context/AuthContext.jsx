@@ -1,5 +1,4 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
-import { setAuthToken } from "../services";
 
 export const useAuth = () => {
   const authContext = useContext(AuthContext);
@@ -27,27 +26,27 @@ export const AuthProvider = ({ children }) => {
 
     localStorage.setItem('@user', JSON.stringify(userCredentials));
     localStorage.setItem('@auth', JSON.stringify(googleData));
+    localStorage.setItem('@token', googleData.credential);
     setAuth(googleData);
     setUser(userCredentials);
-    setAuthToken(googleData.credential);
   }, []);
 
   const handleAuthFailure = () => {
-    setUser(null);
-    setAuth(null);
-    setAuthToken(null);
     localStorage.removeItem('@user');
     localStorage.removeItem('@auth');
+    localStorage.removeItem('@token');
     window.location.href = "/";
+    setUser(null);
+    setAuth(null);
   };
 
   const handleSignOut = useCallback(() => {
-    setUser(null);
-    setAuth(null);
-    setAuthToken(null);
     localStorage.removeItem('@user');
     localStorage.removeItem('@auth');
+    localStorage.removeItem('@token');
     window.location.href = "/";
+    setUser(null);
+    setAuth(null);
   }, []);
 
   const handleGetAuthStatus = useCallback(() => {
