@@ -13,8 +13,8 @@ import { useActivities } from '../../context/ActivitiesContext';
 
 const SORT_OPTIONS = [
   { value: 'owner_email', label: 'Email' },
-  { value: 'period', label: 'Tipo' },
-  { value: 'kind', label: 'Periodo' },
+  { value: 'workload', label: 'Periodo' },
+  { value: 'kind', label: 'Tipo' },
   { value: 'state', label: 'Estado' },
   { value: 'updated_time', label: 'Data atualização' }
 ]
@@ -38,7 +38,7 @@ const Table = ({ variant, activities, activitiesCount }) => {
   };
 
   const handleChangeSort = (sort) => {
-    setActivitiesPagination(previousState => ({ ...previousState, sort: sort }));
+    setActivitiesPagination(previousState => ({ ...previousState, sortField: sort }));
   };
 
   return (
