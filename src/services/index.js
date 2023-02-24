@@ -19,8 +19,8 @@ export const setAuthToken = token => {
 export const handleErrors = error => {
   if (error.response) {
     console.error(error.response.data);
-    console.error(error.response.status);
     console.error(error.response.headers);
+    console.info(error.response.status + " " + error.response.data.message);
   } else if (error.request) {
     console.error(error.request);
   } else {

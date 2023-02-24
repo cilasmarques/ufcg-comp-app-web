@@ -7,3 +7,5 @@ export const API_ENDPOINT_ACTIVITY_VALIDATE = '/activity/validate';
 export const API_ENDPOINT_ACTIVITY_VOUCHER_DOWNLOAD = '/activity/voucher/download';
 export const API_ENDPOINT_PROCESS_VERIFY = '/process/check';
 export const API_ENDPOINT_AUTH_REVIEWER_COORDINATOR = '/auth/user/reviewer_and_coordinator';
+export const API_ENDPOINT_USER_REGISTER = '/user/register';
+export const API_ENDPOINT_USER_UPDATE_ENROLL = '/user/update/enroll';

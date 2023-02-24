@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 // PAGES
 import Dashboard from "../pages/Dashboard/Dashboard";
 import PDFVerifier from "../pages/PDFVerifier/PDFVerifier";
+import UserRegister from "../pages/UserRegister/UserRegister";
 
 export const PrivateRoutes = () => {
   const { user } = useAuth();
@@ -14,7 +15,10 @@ export const PrivateRoutes = () => {
     <Routes>
       <Route path="/" index element={<Dashboard />} />
       {user?.isAdmin &&
-        <Route path="/verificarDocumentos" index element={<PDFVerifier />} />
+        <>
+          <Route path="/verificarDocumentos" index element={<PDFVerifier />} />
+          <Route path="/cadastrarUsuarios" index element={<UserRegister />} />
+        </>
       }
     </Routes>
   );

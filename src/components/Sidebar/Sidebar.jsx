@@ -17,7 +17,10 @@ const Sidebar = () => {
       <MenuContainer>
         <MenuItemLink to={"/"}> Atividades complementares </MenuItemLink>
         {user?.isAdmin &&
-          <MenuItemLink to={"/verificarDocumentos"}> Verificação de documentos </MenuItemLink>
+          <>
+            <MenuItemLink to={"/verificarDocumentos"}> Verificação de documentos </MenuItemLink>
+            <MenuItemLink to={"/cadastrarUsuarios"}> Cadastro de Usuários </MenuItemLink>
+          </>
         }
         <MenuItemLink onClick={handleSignOut}> Sair </MenuItemLink>
       </MenuContainer>
