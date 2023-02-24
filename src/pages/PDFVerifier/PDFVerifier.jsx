@@ -14,11 +14,11 @@ import { Grid, GridContent, GridSidebar } from "../../styles/global/Grid";
 
 function PDFVerifier() {
   const [file, setFile] = useState(null);
-  const [userEmail, setUserEmail] = useState("");
+  const [userEnroll, setUserEnroll] = useState("");
   // const [uploading, setUploading] = useState(false);
 
-  const handleChangeUserEmail = (e) => {
-    setUserEmail(e.target.value);
+  const handleChangeUserEnroll = (e) => {
+    setUserEnroll(e.target.value);
   };
 
   const handleFileChange = (e) => {
@@ -35,11 +35,10 @@ function PDFVerifier() {
     try {
       const formData = new FormData();
       formData.append('voucher', file);
-      formData.append('user_email', userEmail);
+      formData.append('user_enroll', userEnroll);
 
       const response = await verifyProcess(formData);
       if (response.status === 200) {
-        // alert pdf is valid
         response.data.isValid ? window.alert("PDF válido") : window.alert("PDF inválido");
       }
     } catch (err) {
@@ -61,14 +60,16 @@ function PDFVerifier() {
         </Head>
 
         <div style={{ display: 'flex', gap: 20 }}>
-          <Input placeholder="Insira o email do estudante" onChange={handleChangeUserEmail} />
-          <Input variant='file' text={file?.name} onChange={handleFileChange} />
+          <Input placeholder="Matricula do estudante" type="numeric" onChange={handleChangeUserEnroll} />
+          <Input variant='file' text={file ? file.name : "Selecionar PDF"} onChange={handleFileChange} />
           <Button
             text="Verificar"
             backgroundColor="#497DB1"
             onClick={handleFileUpload}
           />
         </div>
+
+        
       </GridContent>
     </Grid>
   );
