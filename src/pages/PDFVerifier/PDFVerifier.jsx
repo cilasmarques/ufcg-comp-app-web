@@ -37,8 +37,17 @@ function PDFVerifier() {
       formData.append('voucher', file);
       formData.append('user_enroll', userEnroll);
 
+      if (userEnroll === "") {
+        window.alert("Matricula do estudante não pode ser vazia");
+        return;
+      }
+      if (file === null) {
+        window.alert("Nenhum arquivo selecionado");
+        return;
+      }
+
       const response = await verifyProcess(formData);
-      if (response.status === 200) {
+      if (response?.status === 200) {
         response.data.isValid ? window.alert("PDF válido") : window.alert("PDF inválido");
       }
     } catch (err) {
