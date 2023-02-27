@@ -1,6 +1,6 @@
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, CircularProgress } from "@mui/material";
 import { saveAs } from 'file-saver';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // COMPONENTS
 import AssignmentOptions from '../Actions/Assignment/Assignment';
@@ -13,19 +13,32 @@ import { downloadActivityVoucher } from "../../../services/ActivityService";
 
 // STYLES
 import { TableContentContainer } from "./styles.body";
-
-// TODO: Add more options and put this in the backend
-const REVIEWERS_OPTIONS = [
-  { value: "cilas.marques@ccc.ufcg.edu.br", label: "cilas.marques@ccc.ufcg.edu.br" },
-  { value: "fubica@computacao.ufcg.edu.br", label: "fubica@computacao.ufcg.edu.br" },
-];
+import { userFindByRole } from "../../../services/UserService";
 
 const BodyContent = ({ data, isAdmin, enableActionsField }) => {
-  const [reviewer, setReviewer] = useState(REVIEWERS_OPTIONS[0].value);
+  const [reviewer, setReviewer] = useState(null);
+  const [reviewersOptions, setReviewersOptions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      setIsLoading(true);
+      const response = await userFindByRole('REVIEWER');
+      if (response?.status === 200) {
+        const reviewers = response.data.users.map((user) => {
+          return { value: user.email, label: user.email }
+        });
+        setReviewer(reviewers[0].value);
+        setReviewersOptions(reviewers);
+      }
+      setIsLoading(false);
+    }
+    loadData();
+  }, []);
 
   const handleDownloadDoc = async (path) => {
     const response = await downloadActivityVoucher(path);
-    if (response.status === 200) {
+    if (response?.status === 200) {
       const filename = path.split("/")[1];
       saveAs(response.data, filename);
     } else {
@@ -114,10 +127,13 @@ const BodyContent = ({ data, isAdmin, enableActionsField }) => {
           </TableCell> :
           <TableCell align="center">
             <TableContentContainer>
-              <Select
-                options={REVIEWERS_OPTIONS}
-                onChange={handleSetReviewer}
-              />
+              {isLoading ?
+                <CircularProgress /> :
+                <Select
+                  options={reviewersOptions}
+                  onChange={handleSetReviewer}
+                />
+              }
             </TableContentContainer>
           </TableCell>
       )}

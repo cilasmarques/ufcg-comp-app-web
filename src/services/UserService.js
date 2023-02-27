@@ -1,5 +1,5 @@
 import API, { handleErrors } from ".";
-import { API_ENDPOINT_USER_REGISTER, API_ENDPOINT_USER_UPDATE_ENROLL } from "../utils/constants";
+import { API_ENDPOINT_USER_REGISTER, API_ENDPOINT_USER_UPDATE_ENROLL, API_ENDPOINT_USER_FIND_BY_ROLE } from "../utils/constants";
 
 export async function userRegister(user) {
   try {
@@ -26,3 +26,16 @@ export async function userUpdate(user) {
     handleErrors(error);
   }
 };
+
+export async function userFindByRole(role) {
+  try {
+    return await API.get(`${API_ENDPOINT_USER_FIND_BY_ROLE}/${role}`);
+  } catch (error) {
+    if (error.response?.status === 404) {
+      alert("Usuário não encontrado");
+    } else {
+      alert("Erro ao buscar usuário, por favor verifique os dados informados");
+    }
+    handleErrors(error);
+  }
+}
