@@ -11,6 +11,9 @@ import Button from "../../Button/Button";
 // SERVICES
 import { downloadActivityVoucher } from "../../../services/ActivityService";
 
+// STYLES
+import { TableContentContainer } from "./styles.body";
+
 // TODO: Add more options and put this in the backend
 const REVIEWERS_OPTIONS = [
   { value: "cilas.marques@ccc.ufcg.edu.br", label: "cilas.marques@ccc.ufcg.edu.br" },
@@ -61,54 +64,72 @@ const BodyContent = ({ data, isAdmin, enableActionsField }) => {
   return (
     <TableRow key={data._id}>
       <TableCell align="center">
-        <p style={{ wordWrap: 'break-word', width: 161 }}>{data.owner_email}</p>
+        <TableContentContainer>
+          <p style={{ wordWrap: 'break-word', width: 161 }}>{data.owner_email}</p>
+        </TableContentContainer>
       </TableCell>
 
       <TableCell align="center">
-        <p>{handlePrettyState(data.state)}</p>
-        <p>{handlePrettyDate(data.updated_time)}</p>
+        <TableContentContainer>
+          <p>{handlePrettyState(data.state)}</p>
+          <p>{handlePrettyDate(data.updated_time)}</p>
+        </TableContentContainer>
       </TableCell>
 
       <TableCell align="center">
-        <p>{data.kind}</p>
+        <TableContentContainer>
+          <p>{data.kind}</p>
+        </TableContentContainer>
       </TableCell>
 
       <TableCell align="center">
-        <p>{data.workload} {data.workload_unity}</p>
-        {data.computed_credits && (data.computed_credits > 1 ? <p>{data.computed_credits} créditos</p> : <p>{data.computed_credits} crédito</p>)}
+        <TableContentContainer>
+          <p>{data.workload} {data.workload_unity}</p>
+          {data.computed_credits && (data.computed_credits > 1 ? <p>{data.computed_credits} créditos</p> : <p>{data.computed_credits} crédito</p>)}
+        </TableContentContainer>
       </TableCell>
 
       <TableCell align="center">
-        <p>{data.description}</p>
+        <TableContentContainer>
+          <p>{data.description}</p>
+        </TableContentContainer>
       </TableCell>
 
       <TableCell align="center">
-        <Button
-          variant="download"
-          text={data.voucher_path.split('/')[2]}
-          onClick={() => handleDownloadDoc(data.voucher_path)}
-        />
+        <TableContentContainer>
+          <Button
+            variant="download"
+            text={data.voucher_path.split('/')[2]}
+            onClick={() => handleDownloadDoc(data.voucher_path)}
+          />
+        </TableContentContainer>
       </TableCell>
 
       {isAdmin && (
         data.reviewer_email ?
           <TableCell align="center">
-            <p>{data.reviewer_email}</p>
+            <TableContentContainer>
+              <p>{data.reviewer_email}</p>
+            </TableContentContainer>
           </TableCell> :
           <TableCell align="center">
-            <Select
-              options={REVIEWERS_OPTIONS}
-              onChange={handleSetReviewer}
-            />
+            <TableContentContainer>
+              <Select
+                options={REVIEWERS_OPTIONS}
+                onChange={handleSetReviewer}
+              />
+            </TableContentContainer>
           </TableCell>
       )}
 
       {enableActionsField &&
         <TableCell align="center">
-          {isAdmin ?
-            <AssignmentOptions activityId={data.id} reviewer_email={reviewer} /> :
-            <AssessmentOptions activityId={data.id} />
-          }
+          <TableContentContainer>
+            {isAdmin ?
+              <AssignmentOptions activityId={data.id} reviewer_email={reviewer} /> :
+              <AssessmentOptions activityId={data.id} />
+            }
+          </TableContentContainer>
         </TableCell>
       }
     </TableRow>

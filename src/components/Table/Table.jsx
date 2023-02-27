@@ -1,6 +1,6 @@
 
 import PropTypes from 'prop-types';
-import { Table as MUITable, TableBody, TableCell, TableHead, TablePagination, TableRow } from "@mui/material";
+import { Table as MUITable, TableCell, TableHead, TablePagination, TableRow } from "@mui/material";
 
 // COMPONENTS
 import Select from '../Select/Select';
@@ -10,6 +10,9 @@ import HeadContent from './Head/Head';
 // CONTEXT
 import { useAuth } from "../../context/AuthContext";
 import { useActivities } from '../../context/ActivitiesContext';
+
+// STYLES
+import { MainContainer, TableContainer, TableBodyStyled, TableFooter } from './style.table';
 
 const SORT_OPTIONS = [
   { value: 'owner_email', label: 'Email' },
@@ -42,15 +45,8 @@ const Table = ({ variant, activities, activitiesCount }) => {
   };
 
   return (
-    // TODO: Add the css into a styled component 
-    <main style={{ marginBottom: 3 }}>
-      <section style={{
-        width: '100%',
-        height: '75vh',
-        border: 'solid 3px #004A8F',
-        overflow: 'auto'
-      }}
-      >
+    <MainContainer>
+      <TableContainer>
         <MUITable stickyHeader>
           <TableHead>
             <HeadContent
@@ -60,7 +56,7 @@ const Table = ({ variant, activities, activitiesCount }) => {
             />
           </TableHead>
 
-          <TableBody sx={{ maxHeight: 100 }}>
+          <TableBodyStyled>
             {activities.length === 0 ?
               <TableRow>
                 <TableCell align="center" colSpan={8}>
@@ -76,16 +72,11 @@ const Table = ({ variant, activities, activitiesCount }) => {
                   enableReviewerField={user.isAdmin && variant === TableVariants.closed}
                 />
               )}
-          </TableBody>
+          </TableBodyStyled>
         </MUITable>
-      </section>
+      </TableContainer>
 
-      <section style={{
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'revert',
-        justifyContent: 'flex-end'
-      }}>
+      <TableFooter>
         <Select
           onChange={handleChangeSort}
           options={SORT_OPTIONS}
@@ -102,8 +93,8 @@ const Table = ({ variant, activities, activitiesCount }) => {
           page={activitiesPagination.page}
           rowsPerPage={activitiesPagination.size}
         />
-      </section>
-    </main>
+      </TableFooter>
+    </MainContainer>
   );
 };
 

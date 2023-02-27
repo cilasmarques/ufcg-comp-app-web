@@ -5,7 +5,7 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 const ButtonContainer = styled.button`
   background-color: ${props => props.backgroundColor || '#497DB1'};
   border-radius: 2px;
-  border: '1px solid #FFF';
+  border: 1px solid #FFF;
   color: #FFF;
   font-weight: bold;
   font-family: sans-serif;
@@ -24,11 +24,12 @@ const DownloadButton = styled.button`
   text-decoration: none;
   background: #FFF;
   color: #000;
-  border: '1px solid #000';
+  border: 1px solid #000;
   border-radius: 5px;
   padding: 5px 10px;
   font-size: 16px;
   transition: 0.2s ease-in-out;
+  cursor: pointer;
   &:hover {
     background: #004a8f;
     color: #FFF;

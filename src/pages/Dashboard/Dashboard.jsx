@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {  CircularProgress } from "@mui/material";
 
 // COMPONENTS
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -31,6 +31,7 @@ const Dashboard = () => {
   const { user } = useAuth();
   const { activities, activitiesPagination, activitiesCount, setActivitiesCount, setActivities } = useActivities();
   const [variant, setVariant] = useState('opened');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const loadActivitiesData = async () => {
@@ -43,6 +44,7 @@ const Dashboard = () => {
         query.append('states', states);
       }
 
+      setIsLoading(true);
       if (query) {
         const activitiesResponse = await fetchActivities(
           query,
@@ -55,6 +57,7 @@ const Dashboard = () => {
         setActivities(activitiesResponse.data.activities);
         setActivitiesCount(activitiesCountResponse.data.activities_count);
       }
+      setIsLoading(false);
     }
     loadActivitiesData();
   }, [user, variant, activitiesPagination, setActivities, setActivitiesCount]);
@@ -72,15 +75,25 @@ const Dashboard = () => {
       <GridContent>
         <Head>
           <Title>Atividades complementares</Title>
-            <Select 
-              options={ user?.isAdmin ? ADMIN_VIEW_OPTIONS : REVIEWER_VIEW_OPTIONS}
-              onChange={handleChangeVariant}
-            />
+          <Select
+            options={user?.isAdmin ? ADMIN_VIEW_OPTIONS : REVIEWER_VIEW_OPTIONS}
+            onChange={handleChangeVariant}
+          />
         </Head>
 
-        {(variant === "opened") ?
-          <Table variant="opened" activities={activities} activitiesCount={activitiesCount} /> :
-          <Table variant="closed" activities={activities} activitiesCount={activitiesCount} /> 
+        {isLoading ?
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}>
+            <p>Carregando Atividades ...</p>
+            <CircularProgress />
+          </div> :
+          (variant === "opened") ?
+            <Table variant="opened" activities={activities} activitiesCount={activitiesCount} /> :
+            <Table variant="closed" activities={activities} activitiesCount={activitiesCount} />
         }
       </GridContent>
     </Grid>

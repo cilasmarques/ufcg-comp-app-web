@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { CircularProgress } from "@mui/material";
+
 
 // COMPONENTS
 import Button from "../../components/Button/Button";
@@ -9,13 +11,13 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import { verifyProcess } from "../../services/ProcessService";
 
 // STYLES
-import { Head, Title } from "./style.component";
+import { Head, Title } from "./style.pdfVerifier";
 import { Grid, GridContent, GridSidebar } from "../../styles/global/Grid";
 
 function PDFVerifier() {
   const [file, setFile] = useState(null);
   const [userEnroll, setUserEnroll] = useState("");
-  // const [uploading, setUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChangeUserEnroll = (e) => {
     setUserEnroll(e.target.value);
@@ -23,6 +25,7 @@ function PDFVerifier() {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
+    console.log(selectedFile);
     if (selectedFile.type !== 'application/pdf') {
       window.alert('Tipo inválido, apenas PDFs são aceitos');
     } else {
@@ -31,7 +34,7 @@ function PDFVerifier() {
   };
 
   const handleFileUpload = async () => {
-    // setUploading(true);
+    setIsLoading(true);
     try {
       const formData = new FormData();
       formData.append('voucher', file);
@@ -52,9 +55,8 @@ function PDFVerifier() {
       }
     } catch (err) {
       console.error('Upload failed:', err);
-    } finally {
-      // setUploading(false);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -71,14 +73,15 @@ function PDFVerifier() {
         <div style={{ display: 'flex', gap: 20 }}>
           <Input placeholder="Matricula do estudante" type="numeric" onChange={handleChangeUserEnroll} />
           <Input variant='file' text={file ? file.name : "Selecionar PDF"} onChange={handleFileChange} />
-          <Button
-            text="Verificar"
-            backgroundColor="#497DB1"
-            onClick={handleFileUpload}
-          />
+          {isLoading ?
+            <CircularProgress /> :
+            <Button
+              text="Verificar"
+              backgroundColor="#497DB1"
+              onClick={handleFileUpload}
+            />
+          }
         </div>
-
-        
       </GridContent>
     </Grid>
   );

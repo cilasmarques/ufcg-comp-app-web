@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Modal } from "@mui/material";
+import { Modal, CircularProgress } from "@mui/material";
 
 // COMPONENTS
 import Button from "../../../Button/Button";
@@ -10,29 +10,23 @@ import { useActivities } from "../../../../context/ActivitiesContext";
 // SERVICES
 import { assignActivity } from "../../../../services/ActivityService";
 
-// TODO: Move this boxStyle to a styled-component
-const boxStyle = {
-  p: 4,
-  width: 400,
-  top: '50%',
-  left: '50%',
-  boxShadow: 24,
-  position: 'absolute',
-  border: '2px solid #000',
-  bgcolor: 'background.paper',
-  transform: 'translate(-50%, -50%)',
-};
+// STYLES
+import { BoxStyled } from "../style.actions";
 
 const AssignmentOptions = ({ activityId, reviewer_email }) => {
   const { handleCloseActivity } = useActivities();
   const [openModal, setOpenModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAssignReviewer = async () => {
-    const response = await assignActivity(activityId, { 
+    setIsLoading(true);
+    handleCloseModal();
+
+    const response = await assignActivity(activityId, {
       'reviewer_email': reviewer_email
     });
 
-    handleCloseModal();
+    setIsLoading(false);
 
     if (response?.status === 200) {
       alert('Atividade atribuida com sucesso.');
@@ -52,29 +46,31 @@ const AssignmentOptions = ({ activityId, reviewer_email }) => {
 
   return (
     <div>
-      <Button 
-        text='Atribuir'
-        onClick={handleOpenModal}
-      />
-
+      {isLoading ?
+        <CircularProgress /> :
+        <Button
+          text='Atribuir'
+          onClick={handleOpenModal}
+        />
+      }
       <Modal
         open={openModal}
         onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={boxStyle}>
+        <BoxStyled>
           <p> Você deseja atribuir essa atividade a <b>{reviewer_email}</b>? </p>
-          <Button 
+          <Button
             text='Confirmar'
             onClick={handleAssignReviewer}
           />
-          <Button 
+          <Button
             text='Cancelar'
             backgroundColor='#8C3636'
             onClick={handleAssignReviewer}
           />
-        </Box>
+        </BoxStyled>
       </Modal>
     </div >
   )

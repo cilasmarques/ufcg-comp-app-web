@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Modal } from "@mui/material";
+import { Modal, CircularProgress } from "@mui/material";
 
 // COMPONENTS
 import Input from "../../../Input/Input";
@@ -12,18 +12,8 @@ import { useActivities } from "../../../../context/ActivitiesContext";
 // SERVICES
 import { validateActivity } from "../../../../services/ActivityService";
 
-// TODO: Move this boxStyle to a styled-component
-const boxStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+// STYLES
+import { BoxStyled } from "../style.actions";
 
 const AssessmentOptions = ({ activityId }) => {
   const { user } = useAuth();
@@ -32,26 +22,29 @@ const AssessmentOptions = ({ activityId }) => {
   const [openModal, setOpenModal] = useState(false);
   const [justifyField, setJustifyField] = useState(null);
   const [creditsField, setCreditsField] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFinishValidation = async () => {
     let response = null;
     let stateValue = (validation === 'APROVAR') ? 'APPROVED' : 'REJECTED';
 
+    setIsLoading(true);
+    handleCloseModal();
     if (stateValue === 'APPROVED') {
-      response = await validateActivity(activityId, { 
+      response = await validateActivity(activityId, {
         'state': stateValue,
         'computed_credits': creditsField,
         'reviewer_email': user.email,
       })
     } else {
-      response = await validateActivity(activityId, { 
+      response = await validateActivity(activityId, {
         'state': stateValue,
         'justify': justifyField,
         'reviewer_email': user.email,
       })
     }
 
-    handleCloseModal();
+    setIsLoading(false);
 
     if (response?.status === 200) {
       alert('Atividade validada com sucesso.');
@@ -83,37 +76,32 @@ const AssessmentOptions = ({ activityId }) => {
 
   return (
     <div>
-      <Button
-        text='APROVAR'
-        backgroundColor='#368C72'
-        onClick={handleOpenModal}
-      />
-      <Button
-        text='REJEITAR'
-        backgroundColor='#8C3636'
-        onClick={handleOpenModal}
-      />
-
+      {isLoading ?
+        <CircularProgress /> :
+        <>
+          <Button
+            text='APROVAR'
+            backgroundColor='#368C72'
+            onClick={handleOpenModal}
+          />
+          <Button
+            text='REJEITAR'
+            backgroundColor='#8C3636'
+            onClick={handleOpenModal}
+          />
+        </>
+      }
       <Modal
         open={openModal}
         onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={boxStyle}>
+        <BoxStyled>
           <p> Você deseja <b>{validation}</b> essa atividade? </p>
           {(validation === 'APROVAR') ?
-            <Input
-              onChange={handleAddCredits}
-              placeholder="Insira a quantidade de créditos"
-              type="number"
-              min="0"
-            /> :
-            <Input
-              onChange={handleAddJustify}
-              placeholder="Insira uma justificativa"
-              type="text"
-            />
+            <Input onChange={handleAddCredits} placeholder="Insira a quantidade de créditos" type="number" min="0" /> :
+            <Input onChange={handleAddJustify} placeholder="Insira uma justificativa" type="text" />
           }
 
           <Button
@@ -125,7 +113,7 @@ const AssessmentOptions = ({ activityId }) => {
             backgroundColor='#8C3636'
             onClick={handleCloseModal}
           />
-        </Box>
+        </BoxStyled>
       </Modal>
     </div>
   );

@@ -5,7 +5,7 @@ import {
   Container,
   MenuItemLink,
   MenuContainer,
-} from "./style.component.js";
+} from "./style.sideBar";
 
 const Sidebar = () => {
   const { user, handleSignOut } = useAuth();
