@@ -25,7 +25,6 @@ export const LoginPage = () => {
       const userData = response.data.user;
       handleAuthSuccess(googleData, userData);
     } else {
-      window.alert("Falha ao realizar login", "Verifique suas credenciais e tente novamente.");
       handleAuthFailure();
     }
     setIsLoading(false);

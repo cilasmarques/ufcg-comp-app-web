@@ -5,12 +5,7 @@ export async function userRegister(user) {
   try {
     return await API.post(API_ENDPOINT_USER_REGISTER, user);
   } catch (error) {
-    if (error.response?.status === 409) {
-      alert("Usuário já cadastrado");
-    } else {
-      alert("Erro ao cadastrar usuário, por favor verifique os dados informados");
-    }
-    handleErrors(error);
+    handleErrors(error, 'Erro ao cadastrar o usuário');
   }
 };
 
@@ -18,12 +13,7 @@ export async function userUpdate(user) {
   try {
     return await API.put(API_ENDPOINT_USER_UPDATE_ENROLL, user);
   } catch (error) {
-    if (error.response?.status === 404) {
-      alert("Usuário não encontrado");
-    } else {
-      alert("Erro ao atualizar usuário, por favor verifique os dados informados");
-    }
-    handleErrors(error);
+    handleErrors(error, 'Erro ao atualizar o usuário');
   }
 };
 
@@ -31,11 +21,6 @@ export async function userFindByRole(role) {
   try {
     return await API.get(`${API_ENDPOINT_USER_FIND_BY_ROLE}/${role}`);
   } catch (error) {
-    if (error.response?.status === 404) {
-      alert("Usuário não encontrado");
-    } else {
-      alert("Erro ao buscar usuário, por favor verifique os dados informados");
-    }
-    handleErrors(error);
+    handleErrors(error, 'Erro ao buscar os usuários');
   }
 }

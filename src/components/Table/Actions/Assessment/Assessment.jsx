@@ -59,8 +59,6 @@ const AssessmentOptions = ({ activityId }) => {
     if (response?.status === 200) {
       alert('Atividade validada com sucesso.');
       handleCloseActivity(activityId, { 'state': stateValue });
-    } else {
-      alert('Erro ao validada a atividade');
     }
   };
 

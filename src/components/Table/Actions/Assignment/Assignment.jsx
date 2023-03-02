@@ -35,8 +35,6 @@ const AssignmentOptions = ({ activityId, reviewer_email }) => {
     if (response?.status === 200) {
       alert('Atividade atribuida com sucesso.');
       handleCloseActivity(activityId, { 'reviewer_email': reviewer_email, 'state': 'ASSIGNED' });
-    } else {
-      alert('Erro ao atribuir atividade');
     }
   };
 

@@ -10,10 +10,10 @@ import Button from "../../Button/Button";
 
 // SERVICES
 import { downloadActivityVoucher } from "../../../services/ActivityService";
+import { userFindByRole } from "../../../services/UserService";
 
 // STYLES
 import { TableContentContainer } from "./styles.body";
-import { userFindByRole } from "../../../services/UserService";
 
 const BodyContent = ({ data, isAdmin, enableActionsField }) => {
   const [reviewer, setReviewer] = useState(null);
@@ -41,8 +41,6 @@ const BodyContent = ({ data, isAdmin, enableActionsField }) => {
     if (response?.status === 200) {
       const filename = path.split("/")[1];
       saveAs(response.data, filename);
-    } else {
-      alert('Erro ao baixar o documento');
     }
   };
 

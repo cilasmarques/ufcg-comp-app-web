@@ -13,13 +13,18 @@ const API = axios.create({
     }
 })
 
-export const handleErrors = error => {
+export const handleErrors = (error, customMessage) => {
   if (error.response) {
     console.error(error.response.data);
     console.error(error.response.headers);
     console.info(error.response.status + " " + error.response.data.message);
+    if (error.response.data.message)
+      alert(error.response.data.message);
+    else if (customMessage)
+      alert(customMessage);
   } else if (error.request) {
     console.error(error.request);
+    alert("Erro ao se comunicar com o servidor");
   } else {
     console.error("Error", error.message);
   }
