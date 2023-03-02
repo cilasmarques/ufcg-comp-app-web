@@ -19,13 +19,17 @@ const AssignmentOptions = ({ activityId, reviewer_email }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAssignReviewer = async () => {
-    setIsLoading(true);
     handleCloseModal();
 
+    if (!reviewer_email) {
+      alert('Selecione um revisor.');
+      return;
+    }
+
+    setIsLoading(true);
     const response = await assignActivity(activityId, {
       'reviewer_email': reviewer_email
     });
-
     setIsLoading(false);
 
     if (response?.status === 200) {
@@ -61,15 +65,17 @@ const AssignmentOptions = ({ activityId, reviewer_email }) => {
       >
         <BoxStyled>
           <p> Você deseja atribuir essa atividade a <b>{reviewer_email}</b>? </p>
-          <Button
-            text='Confirmar'
-            onClick={handleAssignReviewer}
-          />
-          <Button
-            text='Cancelar'
-            backgroundColor='#8C3636'
-            onClick={handleAssignReviewer}
-          />
+          <div>
+            <Button
+              text='Confirmar'
+              onClick={handleAssignReviewer}
+            />
+            <Button
+              text='Cancelar'
+              backgroundColor='#8C3636'
+              onClick={handleCloseModal}
+            />
+          </div>
         </BoxStyled>
       </Modal>
     </div >

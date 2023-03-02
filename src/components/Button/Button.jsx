@@ -12,6 +12,7 @@ const ButtonContainer = styled.button`
   text-transform: uppercase;
   min-width: 80px;
   min-height: 25px;
+  padding: 5px 10px;
 `
 
 const DownloadButton = styled.button`
@@ -29,6 +30,7 @@ const DownloadButton = styled.button`
   padding: 5px 10px;
   font-size: 16px;
   transition: 0.2s ease-in-out;
+  padding: 5px 10px;
   cursor: pointer;
   &:hover {
     background: #004a8f;

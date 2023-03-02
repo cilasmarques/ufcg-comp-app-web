@@ -28,23 +28,33 @@ const AssessmentOptions = ({ activityId }) => {
     let response = null;
     let stateValue = (validation === 'APROVAR') ? 'APPROVED' : 'REJECTED';
 
-    setIsLoading(true);
     handleCloseModal();
     if (stateValue === 'APPROVED') {
+      if (!creditsField) {
+        alert('Insira a quantidade de créditos.');
+        return;
+      }
+      setIsLoading(true);
       response = await validateActivity(activityId, {
         'state': stateValue,
         'computed_credits': creditsField,
         'reviewer_email': user.email,
       })
+      setIsLoading(false);
     } else {
+      if (!justifyField) {
+        alert('Insira uma justificativa.');
+        return;
+      }
+      setIsLoading(true);
       response = await validateActivity(activityId, {
         'state': stateValue,
         'justify': justifyField,
         'reviewer_email': user.email,
       })
+      setIsLoading(false);
     }
 
-    setIsLoading(false);
 
     if (response?.status === 200) {
       alert('Atividade validada com sucesso.');
@@ -103,16 +113,17 @@ const AssessmentOptions = ({ activityId }) => {
             <Input onChange={handleAddCredits} placeholder="Insira a quantidade de créditos" type="number" min="0" /> :
             <Input onChange={handleAddJustify} placeholder="Insira uma justificativa" type="text" />
           }
-
-          <Button
-            text='Validar'
-            onClick={handleFinishValidation}
-          />
-          <Button
-            text='Cancelar'
-            backgroundColor='#8C3636'
-            onClick={handleCloseModal}
-          />
+          <div>
+            <Button
+              text={validation}
+              onClick={handleFinishValidation}
+            />
+            <Button
+              text='Cancelar'
+              backgroundColor='#8C3636'
+              onClick={handleCloseModal}
+            />
+          </div>
         </BoxStyled>
       </Modal>
     </div>

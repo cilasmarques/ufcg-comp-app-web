@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export const Container = styled.div`
   width: 100%;
   height: 100%;
-  border: solid 5px #004A8F;
+  border-right: solid 1px #004A8F;
 `;
 
 export const Title = styled.h2`
