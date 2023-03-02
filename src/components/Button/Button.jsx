@@ -18,6 +18,7 @@ const ButtonContainer = styled.button`
 const DownloadButton = styled.button`
   min-width: 250px;
   min-height: 30px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,7 +45,9 @@ const Button = (props) => {
     case 'download':
       return <DownloadButton {...props}>
         <FileDownloadOutlinedIcon />
-        {props.text}
+        <div style={{ width: '100%' }}>
+          {props.text}
+        </div>
       </DownloadButton>;
     default:
       return <ButtonContainer {...props}>
