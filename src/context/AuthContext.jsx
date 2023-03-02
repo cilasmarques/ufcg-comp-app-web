@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(JSON.parse(localStorage.getItem('@auth')));
 
   const handleAuthSuccess = useCallback((googleData, userCredentials) => {
-    if (userCredentials.role === "COORDINATOR") {
+    if (userCredentials.role.toUpperCase() === "COORDINATOR") {
       userCredentials = {...userCredentials, isAdmin: true};
     } else {
       userCredentials = {...userCredentials, isAdmin: false};
