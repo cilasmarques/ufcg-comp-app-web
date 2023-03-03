@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {  CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 
 // COMPONENTS
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -11,6 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useActivities } from "../../context/ActivitiesContext";
 
 // SERVICE
+import { userFindByRole } from "../../services/UserService";
 import { fetchActivities, fetchActivitiesCount } from "../../services/ActivityService";
 
 // STYLE
@@ -32,9 +33,10 @@ const Dashboard = () => {
   const { activities, activitiesPagination, activitiesCount, setActivitiesCount, setActivities } = useActivities();
   const [variant, setVariant] = useState('opened');
   const [isLoading, setIsLoading] = useState(false);
+  const [reviewersOptions, setReviewersOptions] = useState([]);
 
   useEffect(() => {
-    const loadActivitiesData = async () => {
+    const loadData = async () => {
       let query = new FormData();
       if (variant === "closed") {
         const states = user.isAdmin ? ["APPROVED", "REJECTED", "ASSIGNED"] : ["APPROVED", "REJECTED"];
@@ -59,8 +61,23 @@ const Dashboard = () => {
       }
       setIsLoading(false);
     }
-    loadActivitiesData();
+    loadData();
   }, [user, variant, activitiesPagination, setActivities, setActivitiesCount]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      setIsLoading(true);
+      const response = await userFindByRole('REVIEWER');
+      if (response?.status === 200) {
+        const reviewers = response.data.users.map((user) => {
+          return { value: user.email, label: user.email }
+        });
+        setReviewersOptions(reviewers);
+      }
+      setIsLoading(false);
+    }
+    loadData();
+  }, []);
 
   const handleChangeVariant = (value) => {
     setVariant(value);
@@ -92,8 +109,8 @@ const Dashboard = () => {
             <CircularProgress />
           </div> :
           (variant === "opened") ?
-            <Table variant="opened" activities={activities} activitiesCount={activitiesCount} /> :
-            <Table variant="closed" activities={activities} activitiesCount={activitiesCount} />
+            <Table variant="opened" activities={activities} activitiesCount={activitiesCount} reviewersOptions={reviewersOptions} /> :
+            <Table variant="closed" activities={activities} activitiesCount={activitiesCount} reviewersOptions={reviewersOptions} />
         }
       </GridContent>
     </Grid>

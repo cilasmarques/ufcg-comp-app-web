@@ -20,7 +20,7 @@ function UserRegister() {
 
   const [updateStudentEmail, setUpdateStudentEmail] = useState("");
   const [updateStudentEnroll, setUpdateStudentEnroll] = useState("");
-  
+
   const [studentsOptions, setStudentsOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -102,7 +102,10 @@ function UserRegister() {
 
           <SmallFormContainer>
             <p>Vincular matrícula ao aluno</p>
-            <Select options={studentsOptions} onChange={(e) => setUpdateStudentEmail(e.target.value)} />
+            {studentsOptions.length === 0 ?
+              <p>Nenhum aluno cadastrado</p> :
+              <Select options={studentsOptions} onChange={(e) => setUpdateStudentEmail(e.target.value)} />
+            }
             <Input placeholder="Matricula do aluno" type="numeric" onChange={(e) => setUpdateStudentEnroll(e.target.value)} value={updateStudentEnroll} />
             {isLoading ? <CircularProgress /> : <Button text="Vincular matricula" backgroundColor="#497DB1" onClick={handleSubmitStudentUpdate} />}
           </SmallFormContainer>

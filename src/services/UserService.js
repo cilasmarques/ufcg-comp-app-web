@@ -21,6 +21,6 @@ export async function userFindByRole(role) {
   try {
     return await API.get(`${API_ENDPOINT_USER_FIND_BY_ROLE}/${role}`);
   } catch (error) {
-    handleErrors(error, 'Erro ao buscar os usuários');
+    handleErrors(error, 'Erro ao buscar os usuários', true);
   }
 }

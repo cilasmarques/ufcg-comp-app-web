@@ -1,6 +1,6 @@
-import { TableCell, TableRow, CircularProgress } from "@mui/material";
+import { TableCell, TableRow } from "@mui/material";
 import { saveAs } from 'file-saver';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // COMPONENTS
 import AssignmentOptions from '../Actions/Assignment/Assignment';
@@ -10,31 +10,12 @@ import Button from "../../Button/Button";
 
 // SERVICES
 import { downloadActivityVoucher } from "../../../services/ActivityService";
-import { userFindByRole } from "../../../services/UserService";
 
 // STYLES
 import { TableContentContainer } from "./styles.body";
 
-const BodyContent = ({ data, isAdmin, enableActionsField }) => {
-  const [reviewer, setReviewer] = useState(null);
-  const [reviewersOptions, setReviewersOptions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const loadData = async () => {
-      setIsLoading(true);
-      const response = await userFindByRole('REVIEWER');
-      if (response?.status === 200) {
-        const reviewers = response.data.users.map((user) => {
-          return { value: user.email, label: user.email }
-        });
-        setReviewer(reviewers[0].value);
-        setReviewersOptions(reviewers);
-      }
-      setIsLoading(false);
-    }
-    loadData();
-  }, []);
+const BodyContent = ({ data, isAdmin, enableActionsField, reviewersOptions }) => {
+  const [reviewer, setReviewer] = useState(reviewersOptions[0]?.value);
 
   const handleDownloadDoc = async (path) => {
     const response = await downloadActivityVoucher(path);
@@ -116,25 +97,19 @@ const BodyContent = ({ data, isAdmin, enableActionsField }) => {
         </TableContentContainer>
       </TableCell>
 
-      {isAdmin && (
-        data.reviewer_email ?
-          <TableCell align="center">
-            <TableContentContainer>
-              <p>{data.reviewer_email}</p>
-            </TableContentContainer>
-          </TableCell> :
-          <TableCell align="center">
-            <TableContentContainer>
-              {isLoading ?
-                <CircularProgress /> :
-                <Select
-                  options={reviewersOptions}
-                  onChange={handleSetReviewer}
-                />
-              }
-            </TableContentContainer>
-          </TableCell>
-      )}
+      {isAdmin && data.reviewer_email ?
+        <TableCell align="center">
+          <TableContentContainer>
+            <p>{data.reviewer_email}</p>
+          </TableContentContainer>
+        </TableCell>
+        :
+        <TableCell align="center">
+          <TableContentContainer>
+            {reviewersOptions.length > 0 ? <Select options={reviewersOptions} onChange={handleSetReviewer} /> : <p>Nenhum revisor disponível</p>}
+          </TableContentContainer>
+        </TableCell>
+      }
 
       {enableActionsField &&
         <TableCell align="center">

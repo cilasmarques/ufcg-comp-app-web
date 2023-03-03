@@ -27,7 +27,7 @@ export const TableVariants = {
   opened: 'opened'
 };
 
-const Table = ({ variant, activities, activitiesCount }) => {
+const Table = ({ variant, activities, activitiesCount, reviewersOptions }) => {
   const { user } = useAuth();
   const { activitiesPagination, setActivitiesPagination } = useActivities();
 
@@ -70,6 +70,7 @@ const Table = ({ variant, activities, activitiesCount }) => {
                   isAdmin={user.isAdmin}
                   enableActionsField={variant === TableVariants.opened}
                   enableReviewerField={user.isAdmin && variant === TableVariants.closed}
+                  reviewersOptions={reviewersOptions}
                 />
               )}
           </TableBodyStyled>
