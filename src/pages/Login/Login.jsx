@@ -11,7 +11,6 @@ import { authReviewerCoordinator } from "../../services/AuthService";
 // STYLES
 import {
   LoginContainer,
-  LoginTitle,
 } from './style.login';
 
 export const LoginPage = () => {
@@ -32,7 +31,7 @@ export const LoginPage = () => {
 
   return (
     <LoginContainer>
-      <LoginTitle>COMPUTAÇÃO@UFCG</LoginTitle>
+      <img src={require("../../assets/retangular-name.png")} alt="Computação@UFCG" />
       {isLoading ?
         <CircularProgress /> :
         <GoogleLogin

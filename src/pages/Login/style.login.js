@@ -11,6 +11,3 @@ export const LoginContainer = styled.div`
   color: white;
 `;
 
-export const LoginTitle = styled.h1`
-  color: #004A8F;
-`
