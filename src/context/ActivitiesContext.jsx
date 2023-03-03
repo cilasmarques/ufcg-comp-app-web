@@ -22,9 +22,8 @@ export const ActivitiesProvider = ({ children }) => {
   const [activitiesPagination, setActivitiesPagination] = useState(initialPaginationConfig);
 
   const handleCloseActivity = useCallback((openedActivityId) => {
-    const newOpenedActivities = activities.filter(activity => activity.id !== openedActivityId);
-    setActivities(newOpenedActivities)
-  }, [activities]);
+    setActivities(previousState => previousState.filter(activity => activity.id !== openedActivityId))
+  }, []);
 
   const activitiesProviderData = useMemo(() => ({
     activities,
