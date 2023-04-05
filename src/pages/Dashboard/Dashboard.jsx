@@ -30,7 +30,7 @@ const REVIEWER_VIEW_OPTIONS = [
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { activities, activitiesPagination, activitiesCount, setActivitiesCount, setActivities } = useActivities();
+  const { activities, activitiesFilter, activitiesPagination, activitiesCount, setActivitiesCount, setActivities } = useActivities();
   const [variant, setVariant] = useState('opened');
   const [isLoading, setIsLoading] = useState(false);
   const [reviewersOptions, setReviewersOptions] = useState([]);
@@ -44,6 +44,10 @@ const Dashboard = () => {
       } else {
         const states = user.isAdmin ? ["CREATED"] : ["ASSIGNED"];
         query.append('states', states);
+      }
+
+      if (activitiesFilter) {
+        query.append('owner_email', activitiesFilter);
       }
 
       setIsLoading(true);
@@ -62,7 +66,7 @@ const Dashboard = () => {
       setIsLoading(false);
     }
     loadData();
-  }, [user, variant, activitiesPagination, setActivities, setActivitiesCount]);
+  }, [user, variant, activitiesFilter, activitiesPagination, setActivities, setActivitiesCount]);
 
   useEffect(() => {
     const loadData = async () => {

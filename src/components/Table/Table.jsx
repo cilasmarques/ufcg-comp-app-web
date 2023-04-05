@@ -1,11 +1,14 @@
 
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { Table as MUITable, TableCell, TableHead, TablePagination, TableRow } from "@mui/material";
 
 // COMPONENTS
 import Select from '../Select/Select';
 import BodyContent from './Body/Body';
 import HeadContent from './Head/Head';
+import Button from '../Button/Button';
+import Input from '../Input/Input';
 
 // CONTEXT
 import { useAuth } from "../../context/AuthContext";
@@ -29,7 +32,8 @@ export const TableVariants = {
 
 const Table = ({ variant, activities, activitiesCount, reviewersOptions }) => {
   const { user } = useAuth();
-  const { activitiesPagination, setActivitiesPagination } = useActivities();
+  const { setActivitiesFilter, activitiesPagination, setActivitiesPagination } = useActivities();
+  const [ filter, setFilter ] = useState();
 
   const handleChangePage = (event, newPage) => {
     setActivitiesPagination(previousState => ({ ...previousState, page: newPage }));
@@ -78,6 +82,22 @@ const Table = ({ variant, activities, activitiesCount, reviewersOptions }) => {
       </TableContainer>
 
       <TableFooter>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setActivitiesFilter(filter);
+          }}
+        >
+          <Input
+            placeholder="Filtrar atividades por email"
+            onChange={(e) =>  setFilter(e.target.value)}
+          />
+          <Button 
+            text="Filtrar"
+            type="submit"
+          />
+        </form>
+
         <Select
           onChange={handleChangeSort}
           options={SORT_OPTIONS}

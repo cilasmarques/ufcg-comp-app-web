@@ -1,8 +1,8 @@
 import API, { handleErrors } from ".";
 
 import {
-  API_ENDPOINT_ACTIVITY_FIND_BY_STATE,
-  API_ENDPOINT_ACTIVITY_COUNT_BY_STATE,
+  API_ENDPOINT_ACTIVITY_FIND_BY_OWNER_STATE,
+  API_ENDPOINT_ACTIVITY_COUNT_BY_OWNER_STATE,
   API_ENDPOINT_ACTIVITY_ASSIGN,
   API_ENDPOINT_ACTIVITY_VALIDATE,
   API_ENDPOINT_ACTIVITY_VOUCHER_DOWNLOAD
@@ -10,7 +10,7 @@ import {
 
 export async function fetchActivities(query, page, rowsPerPage, sort, order) {
   try {
-    return await API.post(`${API_ENDPOINT_ACTIVITY_FIND_BY_STATE}?page=${page}&size=${rowsPerPage}&sort=${sort}&order=${order}`, query);
+    return await API.post(`${API_ENDPOINT_ACTIVITY_FIND_BY_OWNER_STATE}?page=${page}&size=${rowsPerPage}&sort=${sort}&order=${order}`, query);
   } catch (error) {
     handleErrors(error, 'Erro ao buscar as atividades');
   }
@@ -18,7 +18,7 @@ export async function fetchActivities(query, page, rowsPerPage, sort, order) {
 
 export async function fetchActivitiesCount(query) {
   try {
-    return await API.post(API_ENDPOINT_ACTIVITY_COUNT_BY_STATE, query);
+    return await API.post(API_ENDPOINT_ACTIVITY_COUNT_BY_OWNER_STATE, query);
   } catch (error) {
     handleErrors(error);
   }

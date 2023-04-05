@@ -14,10 +14,13 @@ export const TableContainer = styled.section`
 `;
 
 export const TableFooter = styled.section`
+  width: 70%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: 0;
   flex-direction: revert;
-  justify-content: flex-end;
 `;
 
 export const TableBodyStyled = styled(TableBody)`

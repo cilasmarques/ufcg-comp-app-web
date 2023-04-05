@@ -97,18 +97,20 @@ const BodyContent = ({ data, isAdmin, enableActionsField, reviewersOptions }) =>
         </TableContentContainer>
       </TableCell>
 
-      {isAdmin && data.reviewer_email ?
-        <TableCell align="center">
-          <TableContentContainer>
-            <p>{data.reviewer_email}</p>
-          </TableContentContainer>
-        </TableCell>
-        :
-        <TableCell align="center">
-          <TableContentContainer>
-            {reviewersOptions.length > 0 ? <Select options={reviewersOptions} onChange={handleSetReviewer} /> : <p>Nenhum revisor disponível</p>}
-          </TableContentContainer>
-        </TableCell>
+      {isAdmin && 
+        (data.reviewer_email ?
+          <TableCell align="center">
+            <TableContentContainer>
+              <p>{data.reviewer_email}</p>
+            </TableContentContainer>
+          </TableCell>
+          :
+          <TableCell align="center">
+            <TableContentContainer>
+              {reviewersOptions.length > 0 ? <Select options={reviewersOptions} onChange={handleSetReviewer} /> : <p>Nenhum revisor disponível</p>}
+            </TableContentContainer>
+          </TableCell>
+        )
       }
 
       {enableActionsField &&
